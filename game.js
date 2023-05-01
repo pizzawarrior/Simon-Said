@@ -15,6 +15,7 @@ function playSound(name) {
     //init animation to the clicked buttons
 function animatePress(currentColor) {
     $("#" + currentColor).addClass("pressed");
+
     setTimeout(function() {
         $('#' + currentColor).removeClass("pressed");
     }, 100);
@@ -37,9 +38,6 @@ $(document).keydown(function() {
 
 //'Computer' picks random button
 function nextSequence() {
-
-    //userClickedPattern = [];
-
     //add 1 to level each time a click is detected
     level++;
     //update the H1 HTML with corresponding level number each time a click is detected
@@ -65,12 +63,10 @@ function nextSequence() {
 
 // Listen for button click from user
 $(".btn").click(function() {
-   
     //store the id of the button that got clicked: very COOL
    var userChosenColor = $(this).attr('id');
     //push id of button pressed as value in array
     userClickedPattern.push(userChosenColor);
-
     //console.log(userClickedPattern);
    
     playSound(userChosenColor);
@@ -89,24 +85,23 @@ function checkAnswer(currentLevel) {
         //If the user got the most recent answer right, then check that they have finished their sequence with another if statement.
         if (userClickedPattern.length === gamePattern.length) {
         //Call nextSequence() after a 1000 millisecond delay.
-        setTimeout(function() {
+            setTimeout(function() {
             nextSequence();
         }, 1000);
     }
 
-} else {
+    } else {
+        //console.log("wrong");
+        playSound("wrong");
 
-    //console.log("wrong");
-    playSound("wrong");
+        $("body").addClass("game-over");
+        setTimeout(function() {
+            $("body").removeClass("game-over");
+        }, 200);
 
-    $("body").addClass("game-over");
-    setTimeout(function() {
-        $("body").removeClass("game-over");
-    }, 200);
+        $("#level-title").text("Game Over, Press Any Key to Restart");
 
-    $("#level-title").text("Game Over, Press Any Key to Restart");
-
-    startOver();
+        startOver();
     }
 }
 
